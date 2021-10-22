@@ -1,5 +1,7 @@
 from datetime import datetime
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
+from django.shortcuts import render
+from django.http import Http404
 from . import models
 
 
@@ -16,3 +18,11 @@ class HomeView(ListView):
         now = datetime.now()
         context["now"] = now
         return super().get_context_data(**context)
+
+
+class RoomDetail(DetailView):
+
+    """ RoomDetail Definition """
+
+    model = models.Room
+    
