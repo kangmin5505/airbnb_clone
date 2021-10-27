@@ -107,3 +107,6 @@ class Room(core_models.TimeStampedModel):
             return round(all_ratings / len(all_reviews), 2)
         except ZeroDivisionError:
             return 0
+
+    class Meta:
+        ordering = ["-created"]
