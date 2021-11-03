@@ -44,7 +44,7 @@ class Command(BaseCommand):
         rules = room_models.HouseRule.objects.all()
         for pk in created_clean:
             room = room_models.Room.objects.get(pk=pk)
-            for i in range(3, random.randint(3, 15)):
+            for _ in range(3, random.randint(10, 15)):
                 room_models.Photo.objects.create(
                     caption=seeder.faker.sentence(),
                     room=room,

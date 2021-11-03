@@ -88,6 +88,9 @@ class Room(core_models.TimeStampedModel):
     facilities = models.ManyToManyField("Facility", related_name="rooms", blank=True)
     house_rules = models.ManyToManyField("HouseRule", related_name="rooms", blank=True)
 
+    class Meta:
+        ordering = ["-created"]
+
     def __str__(self):
         return self.name
 
@@ -108,5 +111,6 @@ class Room(core_models.TimeStampedModel):
         except ZeroDivisionError:
             return 0
 
-    class Meta:
-        ordering = ["-created"]
+    def first_photo(self):
+        (photo,) = self.photos.all()[:1]
+        return photo.file.url

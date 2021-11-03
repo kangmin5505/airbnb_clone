@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-{% block page_name %}
+{% block page_title %}
   {{room.name}}
-{% endblock page_name %}
+{% endblock page_title %}
 
 {% block content %}
 
@@ -13,7 +13,9 @@
   <div>
     <h2>
       By:
+      <a href="{% url 'users:profile' pk=room.host.pk %}">
       {{room.host.username}}
+      </a>
       {% if room.host.superhost %}
         (superhost)
       {% endif %}
