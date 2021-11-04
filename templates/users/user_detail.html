@@ -20,7 +20,7 @@
             <span class="text-lg">{{user.bio}}</span>
 
             {% if user == user_obj %}
-                <a href="#" class="btn">Edit Profile</a>
+                <a href="{% url 'users:update'%}" class="btn">Edit Profile</a>
             {% endif %}
                 
         </div>
@@ -30,7 +30,7 @@
             <div class="container mx-auto pb-10">
                 <div class="flex flex-wrap mx-40 mb-10">
                     {% for room in user_obj.rooms.all %}
-                        {% include "mixins/room_card.html" with room=room %}
+                        {% include "mixins/room/room_card.html" with room=room %}
                     {% endfor %}
                 </div>
             </div>

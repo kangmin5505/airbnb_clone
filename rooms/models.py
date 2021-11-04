@@ -75,8 +75,8 @@ class Room(core_models.TimeStampedModel):
     beds = models.IntegerField()
     bedrooms = models.IntegerField()
     baths = models.IntegerField()
-    check_in = models.DateField()
-    check_out = models.DateField()
+    check_in = models.TimeField()
+    check_out = models.TimeField()
     instant_book = models.BooleanField(default=False)
     host = models.ForeignKey(
         "users.User", related_name="rooms", on_delete=models.CASCADE
@@ -112,5 +112,12 @@ class Room(core_models.TimeStampedModel):
             return 0
 
     def first_photo(self):
-        (photo,) = self.photos.all()[:1]
-        return photo.file.url
+        try:
+            (photo,) = self.photos.all()[:1]
+            return photo.file.url
+        except ValueError:
+            return None
+
+    def get_next_four_photos(self):
+        photos = self.photos.all()[1:5]
+        return photos

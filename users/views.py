@@ -1,11 +1,12 @@
 import os
 import requests
 from django.contrib.auth.views import PasswordChangeView
-from django.views.generic import FormView, UpdateView
+from django.views.generic import FormView, UpdateView, DetailView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.core.files.base import ContentFile
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from . import forms, models, mixins
@@ -195,7 +196,13 @@ def kakao_callback(request):
         return redirect(reverse("users:login"))
 
 
-class UserProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
+class UserProfileView(DetailView):
+
+    model = models.User
+    context_object_name = "user_obj"
+
+
+class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
 
     model = models.User
     template_name = "users/update-profile.html"
@@ -223,9 +230,9 @@ class UserProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
 
 
 class UpdatePasswordView(
+    mixins.LoggedInOnlyView,
     mixins.EmailLoginOnlyView,
-    mixins.LoggedInOnlyView, 
-    SuccessMessageMixin, 
+    SuccessMessageMixin,
     PasswordChangeView
 ):
 
@@ -242,3 +249,11 @@ class UpdatePasswordView(
     def get_success_url(self):
         return self.request.user.get_absolute_url()
         
+
+@login_required
+def switch_hosting(request):
+    try:
+        del request.session["is_hosting"]
+    except KeyError:
+        request.session["is_hosting"] = True
+    return redirect(reverse("core:home"))
