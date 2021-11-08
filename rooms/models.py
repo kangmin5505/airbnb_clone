@@ -1,7 +1,10 @@
+import datetime
+from dateutil import relativedelta
 from django.db import models
 from django_countries.fields import CountryField
 from django.urls import reverse
 from core import models as core_models
+from cal import Calendar
 
 
 class AbstractItem(core_models.TimeStampedModel):
@@ -121,3 +124,11 @@ class Room(core_models.TimeStampedModel):
     def get_next_four_photos(self):
         photos = self.photos.all()[1:5]
         return photos
+
+    def get_calendars(self):
+        today = datetime.date.today()
+        nextmonth = today + relativedelta.relativedelta(months=1)
+        this_month = Calendar(today.year, today.month)
+        next_month = Calendar(nextmonth.year, nextmonth.month)
+        return [this_month, next_month]
+        
