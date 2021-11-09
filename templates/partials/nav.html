@@ -15,6 +15,7 @@
     {% if request.session.is_hosting %}
       <li class="nav_link"><a href="{% url 'rooms:create' %}">Create Room</a></li>
     {% endif %}
+    <li class="nav_link"><a href="{% url 'lists:see-favs' %}">Favs ({{user.lists.rooms.count}})</a></li>
     <li class="nav_link"><a href="{% url 'users:profile' pk=user.pk %}">Profile</a></li>
     <li class="nav_link ml-8">
       <a href="{% url 'users:logout' %}">Log out</a>
